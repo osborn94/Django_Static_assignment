@@ -1,0 +1,17 @@
+{% extends "blog/header.html" %}
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% block title %}
+        <title>Success</title>
+    {% endblock title %}
+</head>
+<body>
+    {% block content %}
+        <div class="alert">{{ message }}</div>
+        <a href="{% url 'contactus' %}">Go Back</a>
+    {% endblock content %}
+</body>
+</html>

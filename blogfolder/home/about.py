@@ -9,10 +9,6 @@ def About_us(request):
 
 
 
-def Contact_us(request):
-    return render(request, "blog/contact.html")
-
-
 
 
 

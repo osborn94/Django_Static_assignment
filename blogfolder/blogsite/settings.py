@@ -13,6 +13,8 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 from pathlib import Path
 import os
 
+
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -26,7 +28,7 @@ SECRET_KEY = 'django-insecure-epqq!6$@id$6gq25q%0_0pv_%hn*9q)p$*$3uuk)ns3+g_@uab
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['localhost', '127.0.0.1'] 
 
 
 # Application definition
@@ -38,6 +40,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'home',
+    'student',
    
 ]
 
@@ -77,11 +81,40 @@ WSGI_APPLICATION = 'blogsite.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'django-assignment',
+        'USER': 'cohort17',
+        'PASSWORD': 'cohort17',
+        'HOST': 'localhost',
+        'PORT': '3306',
+        'OPTIONS': {
+            'init_command': "SET sql_mode='STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION'"
+        },
+    },
+     'other_db': {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'student',
+        'USER': 'student',
+        'PASSWORD': 'student',
+        'HOST': 'localhost',
+        'PORT': '3306',
+        'OPTIONS': {
+            'init_command': "SET sql_mode='STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION'"
+        },
+    },
 }
 
+DATABASE_ROUTERS = ['blogsite.database_router.AppDatabaseRouter']
+
+
+# Email settings for my app
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 465
+EMAIL_USE_SSL = True
+EMAIL_HOST_USER = 'israelosborn@gmail.com'
+EMAIL_HOST_PASSWORD = 'fqnebmghhhufvbpv'
+ADMIN_EMAIL = 'israelosborn94@yahoo.com'
 
 # Password validation
 # https://docs.djangoproject.com/en/5.0/ref/settings/#auth-password-validators
@@ -119,14 +152,17 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 
+# STATIC_ROOT= os.path.join(BASE_DIR, 'staticfiles')
+
 STATICFILES_DIRS = [
 
-    BASE_DIR, 'staticfiles'
+    os.path.join(BASE_DIR, 'static')
 
 
-]
+ ]
 
-
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 
 # Default primary key field type

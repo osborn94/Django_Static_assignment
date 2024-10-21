@@ -1,7 +1,6 @@
 {% extends "blog/header.html" %}
 
 {% load static %}
-<!DOCTYPE html>
 <html lang="en">
     <head>
         <title>
@@ -49,71 +48,84 @@
         <!-- Main Content-->
         <div class="container px-4 px-lg-5">
             <div class="row gx-4 gx-lg-5 justify-content-center">
-                <div class="col-md-10 col-lg-8 col-xl-7">
+                <div class="col-md-10 col-lg-8 col-xl-7" style="width: 100%;">
                     <!-- Post preview-->
-                    <div class="post-preview">
-                        <a href="post.html">
-                            <div style="display: flex;">
-                            <img style="width: 50px;border-radius: 50%;padding:5px;" class="image" src="https://img.freepik.com/free-photo/closeup-shot-person-holding-compass-with-burred-background_181624-4493.jpg?t=st=1727470447~exp=1727474047~hmac=022ce97897c6e46462565bcc3d545e8f09fd24cec21d8363a2954845fa9ff499&w=740" alt="">
+                     <!-- <div style="display: flex;"> -->
+                    <div class="post-preview" style="display: flex;gap: 20px;">
+                        <div>
+                            <img style="width: 200px;margin-top: 20px; border-radius: 50%;" class="image" src="{%static 'assets/img/post-sample-image.jpg'%}" alt="">
+                        </div>
+                        <div>
+                        <a href="post.html">    
+                            <h2 class="post-title">Man must explore, and this is exploration at its greatest</h2> 
+                            <h3 style="font-weight: lighter;" class="post-subtitle">Problems look mighty small from 150 miles up</h3>
+                            <p class="post-meta">
+                                Posted by
+                                <a href="#!">Start Bootstrap</a>
+                                on September 24, 2023
+                            </p>
+                        </a>           
+                        </div>
+                    </div>
+                <!-- </div> -->
+                    <!-- Divider-->
+                    <hr class="my-4" />
+                    <!-- Post preview-->
+                    <div class="post-preview" style="display: flex;gap: 20px;">
+                        <div >
+                            <img style="border-radius: 50%;width: 200px;margin-top: 20px" src="{%static 'assets/img/post-sample-image.jpg'%}" alt="" >
 
-                            <h2 class="post-title">Man must explore, and this is exploration at its greatest</h2>
-                            </div>
-                            <h3 class="post-subtitle">Problems look mighty small from 150 miles up</h3>
+                        </div>
+                        <div>
+                        <a href="post.html">
+                            <h2 class="post-title">I believe every human has a finite number of heartbeats. I don't intend to waste any of mine.</h2>
+                            <p class="post-meta">
+                                Posted by
+                                <a href="#!">Start Bootstrap</a>
+                                on September 18, 2023
+                            </p>
                         </a>
-                        <p class="post-meta">
-                            Posted by
-                            <a href="#!">Start Bootstrap</a>
-                            on September 24, 2023
-                        </p>
+                        </div>
                     </div>
                     <!-- Divider-->
                     <hr class="my-4" />
                     <!-- Post preview-->
-                    <div class="post-preview">
+                    <div class="post-preview" style="display: flex;gap: 20px;">
+                        <div>
+                            <img style="width: 200px;border-radius: 50%;margin-top: 20px" src="{%static 'assets/img/post-sample-image.jpg'%}" alt="">
+                         </div>
+                         <div>
                         <a href="post.html">
-                            <div style="display: flex;">
-                            <img style="border-radius: 50%;width: 50px;" src="https://img.freepik.com/free-vector/abstract-blue-with-glowing-heartbeat-lines_1017-26805.jpg?t=st=1727551189~exp=1727554789~hmac=f3625b8f403598936ae508f64d299da24f4f10a05905c12d39c82da7d446f21f&w=826" alt="" ><h2 class="post-title">I believe every human has a finite number of heartbeats. I don't intend to waste any of mine.</h2>
-                            </div>
+                            <h2 class="post-title">Science has not yet mastered prophecy</h2>
+                            <h3 class="post-subtitle"style="font-weight: lighter;">We predict too much for the next year and yet far too little for the next ten.</h3>
+                            <p class="post-meta">
+                                Posted by
+                                <a href="#!">Start Bootstrap</a>
+                                on August 24, 2023
+                            </p>
                         </a>
-                        <p class="post-meta">
-                            Posted by
-                            <a href="#!">Start Bootstrap</a>
-                            on September 18, 2023
-                        </p>
+                        </div>
+                        
                     </div>
                     <!-- Divider-->
                     <hr class="my-4" />
                     <!-- Post preview-->
-                    <div class="post-preview">
+                    <div class="post-preview" style="display: flex;gap: 20px;">
+                        <div>
+                            <img style="width: 200px; border-radius: 50%;margin-top: 20px" src="{%static 'assets/img/post-sample-image.jpg'%}" alt="">
+                        </div>
+                        <div>
                         <a href="post.html">
-                            <div style="display: flex;">
-                               <img style="width: 50px;border-radius: 50%;" src="https://img.freepik.com/free-photo/view-hands-holding-jar-lights_23-2150571057.jpg?t=st=1727551450~exp=1727555050~hmac=7ad1d249db2a450ff696f50ddc595055c28a3abaabedde425baaa7032f7a5a0c&w=360" alt="">
-                               <h2 class="post-title">Science has not yet mastered prophecy</h2>
-                            </div>
-                            <h3 class="post-subtitle">We predict too much for the next year and yet far too little for the next ten.</h3>
-                        </a>
-                        <p class="post-meta">
-                            Posted by
-                            <a href="#!">Start Bootstrap</a>
-                            on August 24, 2023
-                        </p>
-                    </div>
-                    <!-- Divider-->
-                    <hr class="my-4" />
-                    <!-- Post preview-->
-                    <div class="post-preview">
-                        <a href="post.html">
-                            <div style="display: flex;">
-                            <img style="width: 50px;border-radius: 50%;" src="https://img.freepik.com/free-photo/top-view-abstract-composition-financial-problems_23-2148749481.jpg?t=st=1727551698~exp=1727555298~hmac=bb74813b37dfba3f92e8d1922e1e05d3609da42f78e819f4ff3b9a9dafeba84c&w=740" alt="">
                             <h2 class="post-title">Failure is not an option</h2>
-                            </div>
-                            <h3 class="post-subtitle">Many say exploration is part of our destiny, but it’s actually our duty to future generations.</h3>
+                            <h3 class="post-subtitle" style="font-weight: lighter;">Many say exploration is part of our destiny, but it’s actually our duty to future generations.</h3>
+                            <p class="post-meta">
+                                Posted by
+                                <a href="#!">Start Bootstrap</a>
+                                on July 8, 2023
+                            </p>
                         </a>
-                        <p class="post-meta">
-                            Posted by
-                            <a href="#!">Start Bootstrap</a>
-                            on July 8, 2023
-                        </p>
+                        </div>
+                        
                     </div>
                     <!-- Divider-->
                     <hr class="my-4" />
