@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 
 {% load static %}
 
@@ -17,13 +18,26 @@
     <!-- Profile Header -->
     <section class="profile-header">
         <div class="container text-center">
-            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRMS3wbH84PsWS_j9jQ9r7UsHCw88OOlF-UCQ&s" alt="Profile Picture">
-            <h1>John Doe</h1>
-            <p>Software Engineering Student | Cohort 2023</p>
-            <span class="badge badge-custom">4.5 Rating</span>
-          
+            {% comment %} {% if student.student_profile.profile_picture %} {% endcomment %}
+            {% if studentprof.student_profile.profile_picture %}
+            <img src="{{studentprof.student_profile.profile_picture.url}}" alt="{{ student.username }}">
+            {% else %}
+            <img class="rounded-circle" src="{% static 'assets/img/osborn_fb.jpg' %}" alt="Default Image" width="50" height="50">
+            {% endif %}
+            <h1>{{ studentprof.first_name }} {{ studentprof.last_name }}</h1>
+
+            {% for program in studentprof.courses.all %}
+            <p>{{program.courses}}{% if not forloop.last %}, {% endif %} | {% for cohort in studentprof.cohortgroup.all %}{{ cohort.name }}{% if not forloop.last %}, {% endif %}{% empty %}No Cohort group found.{% endfor %}</p>
+            {% empty %}
+            No course found.
+            {% endfor %}
+            
+            <span class="badge badge-custom">{{studentprof.student_profile.rating}}</span>
+            
         </div>
+        
     </section>
+    
 
     <!-- Profile Content -->
     <section class="profile-content">
@@ -32,14 +46,15 @@
                 <!-- About the Student -->
                 <div class="col-md-8">
                     <div class="card p-4">
-                        <h5>About John</h5>
+                        <h5>About {{ studentprof.first_name }}</h5>
                         <p>
-                            John Doe is a dedicated and passionate student of Software Engineering in the 2023 Cohort. With excellent problem-solving skills and a keen interest in web development, John has consistently been a top performer in the program.
+                            {{studentprof.student_profile.bio}}
+                
                         </p>
                         <p>
-                            Date of Birth: 15th April 1999 <br>
-                            Address: 123 Software Street, Tech City <br>
-                            Joined: January 2023
+                         <strong>D.O.B:</strong>  {{studentprof.student_profile.date_of_birth}} <br>
+                         <strong>ADDRESS:</strong> {{studentprof.student_profile.address}} <br>
+                         <strong>DATE REGISTERED:</strong>  {{studentprof.student_profile.date_join}}
                         </p>
                         <button class="btn btn-custom">Send Message</button>
                     </div>
@@ -50,14 +65,25 @@
                     <div class="card p-4">
                         <h5>Related Students (Same Cohort)</h5>
                         <ul class="list-unstyled">
+                            {% for related_student in related_students %}
                             <li class="d-flex align-items-center mb-3">
-                                <img src="https://via.placeholder.com/50" alt="Student" class="related-student-img">
+                                {% if related_student.student_profile.profile_picture %}
+                                <img src="{{ related_student.student_profile.profile_picture.url }}" alt="Student" class="related-student-img" width="50" height="50">
+                                {% else %}
+                                <img class="rounded-circle" src="{% static 'assets/img/osborn_fb.jpg' %}" alt="Default Image" width="50" height="50">
+                                {% endif %}
                                 <div class="ms-3">
-                                    <h6 class="mb-0">Jane Smith</h6>
-                                    <small>Software Engineering</small>
+                                    <h6 class="mb-0">{{ related_student.first_name }} {{ related_student.last_name }}</h6>
+                                    <small>{{ related_student.cohortgroup.all.0.name }}</small>
                                 </div>
                             </li>
-                            <li class="d-flex align-items-center mb-3">
+                            {% empty %}
+                            <li>No related students found in the same cohort.</li>
+                            {% endfor %}
+
+
+
+                            {% comment %} <li class="d-flex align-items-center mb-3">
                                 <img src="https://via.placeholder.com/50" alt="Student" class="related-student-img">
                                 <div class="ms-3">
                                     <h6 class="mb-0">David Lee</h6>
@@ -70,7 +96,9 @@
                                     <h6 class="mb-0">Sarah Adams</h6>
                                     <small>UI/UX Design</small>
                                 </div>
-                            </li>
+                            </li> {% endcomment %}
+
+
                         </ul>
                     </div>
                 </div>
@@ -98,6 +126,6 @@
         </div>
     </section>
 
-    <script src="https://kit.fontawesome.com/a076d05399.js"></script>
 </body>
+
 </html>

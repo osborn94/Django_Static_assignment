@@ -18,6 +18,10 @@ class Student(models.Model):
     last_name = models.CharField(max_length=200)
     status = models.BooleanField(default=True)
     student_type = models.CharField(max_length=100, choices=student_types, default='member')
+    date_join = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ['-date_join']    
 
     def __str__(self):
         return f"{self.first_name} {self.last_name}"
@@ -37,7 +41,7 @@ class Student_Profile(models.Model):
 class Program(models.Model):
     courses = models.CharField(max_length=500)
     grade = models.IntegerField(default=0.0)
-    student = models.ForeignKey(Student, on_delete=models.CASCADE)
+    student = models.ForeignKey(Student, related_name='courses', on_delete=models.CASCADE)
 
     def __str__(self):
         return f"{self.courses}"
@@ -45,7 +49,7 @@ class Program(models.Model):
 class CohortGroup(models.Model):
     name = models.CharField(max_length=200)
     date_join = models.DateTimeField(auto_now_add=True)
-    student = models.ManyToManyField(Student)
+    student = models.ManyToManyField(Student, related_name='cohortgroup')
 
     def __str__(self):
         return f"{self.name}"

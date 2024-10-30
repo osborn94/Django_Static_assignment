@@ -5,12 +5,12 @@ from .models import Student, Student_Profile, Program, CohortGroup
 
 @admin.register(Student)
 class StudentAdmin(admin.ModelAdmin):
-    list_display = ['username', 'first_name', 'last_name', 'status', 'student_type']
+    list_display = ['username', 'first_name', 'last_name', 'status', 'student_type', 'date_join']
 
 
 @admin.register(Student_Profile)
 class ProfileAdmin(admin.ModelAdmin):
-    list_display = ['student', 'date_of_birth', 'rating', 'date_join', 'address']
+    list_display = ['student', 'date_of_birth', 'rating', 'date_join', 'address', 'bio']
 
 
 @admin.register(Program)

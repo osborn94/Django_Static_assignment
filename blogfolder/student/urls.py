@@ -11,5 +11,6 @@ from .home import HomepageView
 
 urlpatterns = [
     path('', views.student_list, name='student_list'),
-    path('', HomepageView.as_view(), name= 'homeview')
+    path('', HomepageView.as_view(), name= 'homeview'),
+    path('abouts/<str:username>/', views.student_prof, name= 'about'),
 ]
