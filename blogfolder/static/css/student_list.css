@@ -23,6 +23,9 @@ body {
 .table th, .table td {
     vertical-align: middle;
     border: 1px solid #dee2e6; /* Maintain border style but remove inner white space */
+    /* white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis; */
 }
 .btn-custom {
     background-color: #6C63FF;

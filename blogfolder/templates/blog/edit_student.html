@@ -1,0 +1,66 @@
+{% extends 'blog/studentHeader.html' %}
+
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>
+
+        {% block title %}
+        Edit Student
+          
+        {% endblock title %}
+    </title>
+</head>
+
+
+{% block content %}
+<div class="container mt-5">
+    <h3>Edit Student</h3>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="mb-3">
+            <label for="firstname" class="form-label">First Name</label>
+            <input type="text" class="form-control" id="firstname" name="firstname" value="{{ student.first_name }}">
+        </div>
+        <div class="mb-3">
+            <label for="lastname" class="form-label">Last Name</label>
+            <input type="text" class="form-control" id="lastname" name="lastname" value="{{ student.last_name }}">
+        </div>
+        <div class="mb-3">
+            <label for="role" class="form-label">Role</label>
+            <select class="form-select" id="role" name="role">
+                <option value="president" {% if student.student_type == 'president' %}selected{% endif %}>President</option>
+                <option value="secretary" {% if student.student_type == 'secretary' %}selected{% endif %}>Secretary</option>
+                <option value="member" {% if student.student_type == 'member' %}selected{% endif %}>Member</option>
+            </select>
+        </div>
+        <div class="mb-3">
+            <label for="bio" class="form-label">Bio</label>
+            <textarea class="form-control" id="bio" name="bio" rows="4">{{ student_profile.bio }}</textarea>
+        </div>
+        <div class="mb-3">
+            <label for="dob" class="form-label">Date of Birth</label>
+            <input type="date" class="form-control" id="dob" name="dob" value="{{ student_profile.date_of_birth }}">
+        </div>
+        <div class="mb-3">
+            <label for="addrsss" class="form-label">Address</label>
+            <textarea class="form-control" id="addrsss" name="addrsss" rows="2">{{ student_profile.address }}</textarea>
+        </div>
+        <div class="mb-3">
+            <label for="rating" class="form-label">Rating</label>
+            <input type="number" class="form-control" id="rating" name="rating" value="{{ student_profile.rating }}">
+        </div>
+        <div class="mb-3">
+            <label for="profile_images" class="form-label">Profile Picture</label>
+            <input type="file" class="form-control" id="profile_images" name="profile_images">
+            {% if student_profile.profile_picture %}
+                <img src="{{ student_profile.profile_picture.url }}" alt="Profile Picture" width="100">
+            {% endif %}
+        </div>
+        <button type="submit" class="btn btn-primary">Save Changes</button>
+    </form>
+</div>
+{% endblock %}
+</html>

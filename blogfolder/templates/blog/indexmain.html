@@ -12,6 +12,17 @@
 </head>
 <body>
 
+    {% if messages %}
+        <div class="container mt-3">
+            {% for message in messages %}
+                <div class="alert {% if message.tags %}alert-{{ message.tags }}{% else %}alert-info{% endif %} alert-dismissible fade show" role="alert">
+                    {{ message }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+
     <!-- Header Section -->
     <header class="bg-info text-white py-4 text-center">
         <h1>Welcome to the Exam Portal</h1>
@@ -21,7 +32,10 @@
     <section class="filter-section py-3 bg-light">
         <div class="container text-end">
             <!-- Button to trigger modal -->
-            <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addUserModal">Add Now</button>
+            <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addUserModal">Add Student</button>
+            <!-- <a href="" class="btn btn-success">
+                Add Cohort
+            </a> -->
         </div>
     </section>
 
@@ -39,6 +53,7 @@
                         <th>Date Joined</th>
                         <th>Rating</th>
                         <th>Student type</th>
+                        <th>View</th>
                         <th>Actions</th>
                     </tr>
                 </thead>
@@ -58,7 +73,7 @@
                             {% for cohortgroup in student.cohortgroup_set.all %}
                             {{ cohortgroup.name }}
                             {% empty %}
-                                No cohort found.
+                                No cohort
                             {% endfor %}    
                         </td>
 
@@ -66,7 +81,7 @@
                             {% for program in student.program_set.all %}
                             {{ program.courses }} (Grade: {{ program.grade }})<br>
                             {% empty %}
-                                No courses found.
+                                No courses
                             {% endfor %}
                         </td>
                         <td class="badge bg-success text-white d-flex align-items-center justify-content-center" style="height: 100%;margin-top: 20px;">{{ student.status|yesno:'active,inactive' }}</td>
@@ -87,6 +102,14 @@
                             <a href="{% url 'about' student.username %}" class="btn btn-sm btn-outline-primary">
                                 <i class="fas fa-eye"></i> View
                             </a>
+                        </td>
+                        <td>
+                            <span class="px-2">
+                                <a href="{% url 'edit_student' student.username %}" class="text-primary text-decoration-none"><i class="fas fa-edit"></i>Edit</a>
+                            </span>
+                            <span class="px-2">
+                                <a href="{% url 'delete_student' student.username %}" class="text-danger text-decoration-none"><i class="fas fa-trash"></i>Delete</a>
+                            </span>
                         </td>
                     </tr>
                     {% empty %}
@@ -131,7 +154,134 @@
     </section>
 
     <!-- Add User Modal -->
-    <!-- Your modal code remains the same -->
+    <div class="modal fade" id="addUserModal" tabindex="-1" aria-labelledby="addUserModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addUserModalLabel">Add New User</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <!-- Add User Form -->
+                    <form action="{% url 'add_student' %}" method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
+
+                        <div class="mb-3">
+                            <label for="fullName" class="form-label">fistname</label>
+                            <input type="text" class="form-control" id="fullName" name="firstname"
+                                placeholder="Enter fistname">
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="cohort" class="form-label">Lastname</label>
+                            <input type="text" class="form-control" id="cohort" name="lastname"
+                                placeholder="Enter username">
+                        </div>
+                        <div class="mb-3">
+                            <label for="cohort" class="form-label">Username</label>
+                            <input type="text" class="form-control" id="cohort" name="username"
+                                placeholder="Enter username">
+                        </div>
+
+
+                        <div class="mb-3">
+                            <label for="status" class="form-label">Rank</label>
+                            <select class="form-select" id="status" name="role">
+                                {% for value, label in student_rank %}
+
+
+                                <option value="{{value}}">{{label}}</option>
+
+                                {% endfor %}
+                            </select>
+                        </div>
+
+
+                        <div class="mb-3">
+                            <label for="status" class="form-label">Courses</label>
+                            <select class="form-select" id="status" name="courses">
+                                <option value="front-end">front-end</option>
+                                <option value="back-end">back-end</option>
+                                <option value="back-end">Ui/Ux</option>
+
+
+                            </select>
+                        </div>
+
+
+                        <div class="mb-3">
+                            <label for="fullName" class="form-label">About </label>
+                            <textarea type="text" class="form-control" id="fullName" name="bio" rows="2"></textarea>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="cohort" class="form-label">Date of Birth</label>
+                            <input type="date" class="form-control" id="cohort" name="dob">
+                        </div>
+
+
+                        <div class="mb-3">
+                            <label for="fullName" class="form-label">Address </label>
+                            <textarea type="text" class="form-control" id="" name="addrsss" rows="2"></textarea>
+                        </div>
+
+
+                        <div class="mb-3">
+                            <label for="cohort" class="form-label">Rating</label>
+                            <input type="number" class="form-control" id="cohort" name="rating">
+                        </div>
+
+
+                        <div class="mb-3">
+                            <label for="cohort" class="form-label">profile pic</label>
+                            <input type="file" class="form-control" id="cohort" name="profile_images">
+                        </div>
+
+
+
+                        <div class="mb-3">
+                            {% for cohort in cohorts %}
+
+
+                            <div class="form-check form-switch  form-check-inline ">
+                                <input class="form-check-input" type="checkbox" name="cohort" id=""
+                                    value="{{cohort.id}}" checked>
+
+                                <label class="form-check-label" for="">{{cohort.name}}</label>
+                            </div>
+
+                            {% endfor %}
+
+
+
+
+
+                        </div>
+
+
+
+
+
+                        <!-- <div class="mb-3">
+                            <label for="status" class="form-label">Status</label>
+                            <select class="form-select" id="status" name="status">
+                                <option value="online">Online Exam</option>
+                                <option value="class">Class Exam</option>
+                                <option value="missed">Missed Exam</option>
+                            </select>
+                        </div> -->
+                        <!-- <div class="mb-3">
+                            <label for="dateJoined" class="form-label">Date Joined</label>
+                            <input type="date" class="form-control" id="dateJoined" name="dateJoined">
+                        </div> -->
+
+                        <button type="submit" class="btn btn-primary">Add Now</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 </body>

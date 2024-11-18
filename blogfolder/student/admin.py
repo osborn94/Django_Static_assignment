@@ -5,7 +5,7 @@ from .models import Student, Student_Profile, Program, CohortGroup
 
 @admin.register(Student)
 class StudentAdmin(admin.ModelAdmin):
-    list_display = ['username', 'first_name', 'last_name', 'status', 'student_type', 'date_join']
+    list_display = ['username', 'first_name', 'last_name', 'email', 'contact_phone', 'status', 'student_type', 'date_join']
 
 
 @admin.register(Student_Profile)

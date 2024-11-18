@@ -11,9 +11,80 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+
     <link rel="stylesheet" href="{% static 'css/about2.css' %}">
 </head>
 <body>
+    {% comment %} {% if messages %}
+        <div class="container mt-3">
+            {% for message in messages %}
+                <div class="alert {% if message.tags %}alert-{{ message.tags }}{% else %}alert-info{% endif %} alert-dismissible fade show" role="alert">
+                    {{ message }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %} {% endcomment %}
+
+
+    <!-- Message Modal -->
+     <div class="modal fade" id="messageModal" tabindex="-1" aria-labelledby="messageModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            {% comment %} <form method="post" action="{% url 'send_message' %}"> {% endcomment %}
+            <form method="post" id="sendMessageForm" action="{% url 'send_message' %}">
+                {% csrf_token %}
+                <div class="modal-header">
+                    <h5 class="modal-title" id="messageModalLabel">Send Message</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="recipientName" class="form-label">Receiver's Name</label>
+                        <input type="text" class="form-control" id="recipientName" name="recipient_name" value="{{ studentprof.first_name}} {{ studentprof.last_name}}" readonly>
+
+                    </div>
+                    <div class="mb-3">
+                        <label for="recipientEmail" class="form-label">Receiver's Email</label>
+                        <input type="email" class="form-control" id="recipientEmail" name="recipient_email" value="{{ studentprof.email }}" readonly>
+
+                    </div>
+                    <div class="mb-3">
+                        <label for="emailTitle" class="form-label">Email Title</label>
+                        <input type="text" class="form-control" name="email_title" placeholder="Enter email title" id="emailTitle">
+                    </div>
+                    <div class="mb-3">
+                        <label for="messageBody" class="form-label">Message</label>
+                        <textarea name="message_body" id="messageBody" class="form-control" placeholder="Type in your message here" rows="4"></textarea>
+                    </div>
+                    <!-- sender info starts here -->
+                     <div class="mb-3">
+                        <label for="senderName" class="form-label">Your Name</label>
+                        <input type="text" class="form-control" id="senderName" name="sender_name" placeholder="Your Name required">
+                     </div>
+                     <div class="mb-3">
+                        <label for="senderContact" class="form-label">Your Contact Number</label>
+                        <input class="form-control" type="text" name="sender_contact" id="senderName" placeholder="Your Contact Number" required>
+
+                     </div>
+                     <div class="mb-3">
+                        <label for="senderEmail" class="form-label">Your Email</label>
+                        <input class="form-control" type="email" name="sender_email" id="senderEmail" required>
+
+                     </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Send Message</button>
+
+                </div>
+
+            </form>
+        </div>
+        </div>
+     </div>
 
     <!-- Profile Header -->
     <section class="profile-header">
@@ -56,9 +127,10 @@
                          <strong>ADDRESS:</strong> {{studentprof.student_profile.address}} <br>
                          <strong>DATE REGISTERED:</strong>  {{studentprof.student_profile.date_join}}
                         </p>
-                        <button class="btn btn-custom">Send Message</button>
+                        <button type="button" class="btn btn-custom" data-bs-toggle="modal" data-bs-target="#messageModal">Send Message</button>
                     </div>
                 </div>
+
 
                 <!-- Related Students -->
                 <div class="col-md-4">
@@ -126,6 +198,124 @@
         </div>
     </section>
 
+    {% comment %} <script>
+        document.getElementById('sendMessageForm').onsubmit = function(event) {
+            event.preventDefault();  // Prevent default form submission
+            var form = this;
+    
+            // Use the fetch API to send the form data via AJAX
+            fetch(form.action, {
+                method: 'POST',
+                body: new FormData(form)
+            })
+            .then(response => response.json())
+            .then(data => {
+                // Check if the response indicates success
+                if (data.status === 'success') {
+                    // Hide the modal using Bootstrap's modal instance
+                    var modal = bootstrap.Modal.getInstance(document.getElementById('messageModal'));
+                    modal.hide();
+    
+                    // Display success alert on the page
+                    displayAlert('Message sent successfully!', 'success');
+    
+                    // Reset the form fields after successful submission
+                    form.reset();
+                } else {
+                    // Show error alert if there's an issue
+                    displayAlert(data.error, 'danger');
+                }
+            })
+            .catch(error => {
+                displayAlert('Form submission failed: ' + error, 'danger');
+            });
+        };
+    
+        // Function to display an alert on the page
+        function displayAlert(message, type) {
+            // Create alert element
+            var alertBox = document.createElement('div');
+            alertBox.className = `alert alert-${type} alert-dismissible fade show mt-3`;
+            alertBox.role = 'alert';
+            alertBox.innerHTML = `
+                ${message}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            `;
+    
+            // Insert alert into the DOM (for example, at the top of the page)
+            document.body.insertBefore(alertBox, document.body.firstChild);
+    
+            // Automatically remove the alert after one minute
+            setTimeout(() => {
+                alertBox.classList.remove('show');
+                alertBox.classList.add('fade');
+                setTimeout(() => alertBox.remove(), 150); // Allow fade-out transition
+            }, 60000); // Display for 60 seconds
+        }
+    </script> {% endcomment %}
+    
+
+    {% comment %} <script>
+        document.getElementById('sendMessageForm').onsubmit = function() {
+            var form = this;
+        
+            fetch(form.action, {
+                method: 'POST',
+                body: new FormData(form)
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === 'success') {
+                    // Display success message as a Bootstrap alert
+                    var alert = document.createElement('div');
+                    alert.classList.add('alert', 'alert-success', 'alert-dismissible', 'fade', 'show');
+                    alert.setAttribute('role', 'alert');
+                    alert.innerHTML = 'Message sent successfully!';
+                    alert.innerHTML += '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>';
+                    document.querySelector('.container').prepend(alert); // Adds it to the top of the container
+                } else {
+                    // Display error message
+                    alert('Error sending message: ' + data.error);
+                }
+            })
+            .catch(error => {
+                alert('Form submission failed: ' + error);
+            });
+        
+            return false;
+        };
+        
+    </script> {% endcomment %}
+
+
+    {% comment %} <script>
+        // JavaScript for handling the form submission and modal behavior
+        document.getElementById('sendMessageForm').onsubmit = function() {
+            var form = this;
+          
+            fetch(Form.action, {
+                method: 'POST',
+                body: new FormData(form)
+            })
+            .then(response => response.json())
+            .then(data => {
+                // Close modal if submission is successful
+                if (data.status === 'success') {
+                    var modal = new bootstrap.Modal(document.getElementById('messageModal'));
+                    modal.hide();
+                } else {
+                    alert('Error sending message: ' + data.error);
+                }
+            })
+            .catch(error => {
+                alert('Form submission failed: ' + error);
+            });
+
+            // Prevent the form from submitting the traditional way
+            return false;
+        };
+    </script> {% endcomment %}
+   
 </body>
 
 </html>
